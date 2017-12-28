@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>
+      NYTimesApp
+    </ion-title>
+    <button ion-button menuToggle icon-only>
+      <ion-icon name='menu'></ion-icon>
+    </button>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-searchbar [(ngModel)]="searchQuery" (search)="executeSearchNews()" hideCancelButton="true" debounce="250" autocorrect="off"></ion-searchbar>
+
+  <ion-list>
+    <ion-item *ngFor="let news of newsList" (click)="goToNewsDetail(news)">
+      <ion-thumbnail item-start>
+        <img [src]="news.urlImageThumbnail">
+      </ion-thumbnail>
+      <h2>{{ news.headline }}</h2>
+      <p><b>Publicación:</b> {{ news.pubDate | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+      <p><b>Fuente:</b> {{ news.source }}</p>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,20 @@
+  <ion-menu [content]="mycontent">
+    <ion-header>
+        <ion-toolbar color="primary">
+            <ion-title>Mas Opciones</ion-title>
+        </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <button ion-item (click)="clearSearch()">
+            Limpiar
+        </button>
+        <button ion-item (click)="showSearchHistoric()">
+            Ultimas busquedas
+        </button>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  
+  <ion-nav #mycontent [root]="rootPage"></ion-nav>
+  
