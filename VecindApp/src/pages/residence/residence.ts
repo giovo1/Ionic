@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { Residence } from '../../models/residence';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { ResidenceServiceProvider } from '../../providers/residence-service/residence-service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 /**
  * Generated class for the ResidencePage page.
@@ -21,6 +22,7 @@ export class ResidencePage {
   public residence: Residence;
   public operation: String;
   public title: String;
+  residenceFormGroup: FormGroup;
 
   options: CameraOptions = {
     quality: 100,
@@ -32,7 +34,17 @@ export class ResidencePage {
   constructor(public navCtrl: NavController, 
               public navParams: NavParams, 
               public camera: Camera, 
-              public residenceServiceProvider: ResidenceServiceProvider) {
+              public residenceServiceProvider: ResidenceServiceProvider,
+              public formBuilder: FormBuilder,
+              public toastCtrl: ToastController) {
+
+    this.residenceFormGroup = formBuilder.group({
+      name: ['', Validators.compose([Validators.maxLength(50), Validators.pattern('[a-zA-ZÀ-ÿ0-9. ]*'), Validators.required])],
+      address: ['', Validators.compose([Validators.maxLength(100), Validators.pattern('[a-zA-ZÀ-ÿ0-9(). ]*'), Validators.required])],
+      phone: ['', Validators.compose([Validators.minLength(8), Validators.maxLength(8), Validators.pattern('([2,3,4,5,6,7])[0-9 ]*'), Validators.required])],
+      slogan: ['', Validators.compose([Validators.maxLength(200), Validators.pattern('([a-zA-ZÀ-ÿ])[a-zA-ZÀ-ÿ0-9. ]*'), Validators.required])]
+    });
+
     this.operation = navParams.get('operation');
     if (this.operation == 'add'){
       console.log('operacion adicionar');
@@ -83,11 +95,20 @@ export class ResidencePage {
   }
 
   process(){
-    console.log('Procesara...');
-    if (this.operation == 'add'){
-      this.saveResidence(this.residence);
-    } else if (this.operation == 'edit'){
-      this.editResidence(this.residence.id, this.residence);
+    
+    if (this.residenceFormGroup.valid){
+      console.log('Procesara...');
+      if (this.operation == 'add'){
+        this.saveResidence(this.residence);
+      } else if (this.operation == 'edit'){
+        this.editResidence(this.residence.id, this.residence);
+      }
+    } else {
+      let toast = this.toastCtrl.create({
+        message: 'Por favor revisar la información ingresada.',
+        duration: 3000
+      });
+      toast.present();
     }
   }
 }

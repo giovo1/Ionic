@@ -21,6 +21,7 @@ export class LoginPage {
   
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public afAuth: AngularFireAuth, public toastCtrl: ToastController) {
+
   }
 
   ionViewDidLoad() {
